@@ -2,6 +2,10 @@
     margin-top: 7.0em;
 }
 
+form {
+    display: inline;
+}
+
 i.icon {
     font-size: 2em;
 }

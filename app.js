@@ -1,13 +1,15 @@
 var express = require('express'),
     app = express(),
     bodyParser = require('body-parser'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    methodOverride = require('method-override');
 
 // Connect to mongoDB database
 mongoose.connect("mongodb://localhost/rest_blog");
-app.set("view engine", "ejs");
+app.set("view engine", "ejs"); // Don't have to type .ejs when specifying routes
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride("_method")); // For put and delete methods in our ejs files
 
 // Set up mongo schema
 var blogSchema = new mongoose.Schema({
@@ -81,9 +83,27 @@ app.get("/blogs/:id/edit", function (req, res) {
 });
 
 // UPDATE
-app.put("/blogs/:id", function(req,res){
-    
+app.put("/blogs/:id", function (req, res) {
+    Blog.findByIdAndUpdate(req.params.id, req.body.blog, function (err, updatedBlog) {
+        if (err) {
+            res.redirect("/blogs");
+        } else {
+            res.redirect("/blogs/" + req.params.id);
+        }
+    });
 });
+
+// DELETE
+app.delete("/blogs/:id", function(req,res){
+    Blog.findByIdAndRemove(req.params.id, function(err){
+        if(err){
+            res.redirect("/blogs");
+        } else {
+            res.redirect("/blogs");
+        }
+    });
+});
+
 /////////////////////////////////////
 /////////////////////////////////////
 

@@ -9,14 +9,14 @@
                     <%= blog.title %>
                 </h2>
             </div>
-            <div class="ui segment">
+            <div class="ui blue segment">
                 <img class="ui centered rounded medium image" src="<%= blog.image %>">
                 <br>
                 <span>
                     <%= blog.created.toDateString() %>
                 </span>
                 <p>
-                    <%= blog.body.substring(0,100) %>
+                    <%- blog.body.substring(0,100) %>
                     <% if(blog.body.length >= 100) { %>
                         ...
                     <% } %>
