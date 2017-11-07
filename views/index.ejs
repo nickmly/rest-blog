@@ -1,0 +1,30 @@
+<% include partials/header %>
+
+    <h1>Index</h1>
+
+    <% blogs.forEach(function(blog){ %>
+        <div class="ui container segments">
+            <div class="ui top attached segment">
+                <h2>
+                    <%= blog.title %>
+                </h2>
+            </div>
+            <div class="ui segment">
+                <img class="ui centered rounded medium image" src="<%= blog.image %>">
+                <br>
+                <span>
+                    <%= blog.created.toDateString() %>
+                </span>
+                <p>
+                    <%= blog.body.substring(0,100) %>
+                    <% if(blog.body.length >= 100) { %>
+                        ...
+                    <% } %>
+                </p>
+                <a class="ui primary basic button" href="blogs/<%= blog._id %>">Read more</a>
+            </div>
+        </div>
+
+        <% });%>
+
+            <% include partials/footer %>
