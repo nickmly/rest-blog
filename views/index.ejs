@@ -1,30 +1,38 @@
 <% include partials/header %>
 
     <h1>Index</h1>
+    <div class="ui main container segment">
+        <div class="ui divided items">
+            <% blogs.forEach(function(blog){ %>
+                <div class="item">
+                    <div class="content">
+                        <div class="ui attached blue segment header">
+                            <h2>
+                                <%= blog.title %>
+                            </h2>
+                        </div>                        
+                        <img class="ui centered rounded medium image" src="<%= blog.image %>">
+                        
+                        <div class="meta">
+                            <span>
+                                <%= blog.created.toDateString() %>
+                            </span>
+                        </div>
+                        <p>
+                            <%- blog.body.substring(0,100) %>
+                                <% if(blog.body.length >= 100) { %>
+                                    ...
+                                    <% } %>
+                        </p>
+                        <div class="extra">
+                            <a class="ui right floated primary basic button" href="blogs/<%= blog._id %>">Read more
+                                <i class="right chevron icon"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
-    <% blogs.forEach(function(blog){ %>
-        <div class="ui container segments">
-            <div class="ui top attached segment">
-                <h2>
-                    <%= blog.title %>
-                </h2>
-            </div>
-            <div class="ui blue segment">
-                <img class="ui centered rounded medium image" src="<%= blog.image %>">
-                <br>
-                <span>
-                    <%= blog.created.toDateString() %>
-                </span>
-                <p>
-                    <%- blog.body.substring(0,100) %>
-                    <% if(blog.body.length >= 100) { %>
-                        ...
-                    <% } %>
-                </p>
-                <a class="ui primary basic button" href="blogs/<%= blog._id %>">Read more</a>
-            </div>
+                <% });%>
         </div>
-
-        <% });%>
-
-            <% include partials/footer %>
+    </div>
+    <% include partials/footer %>

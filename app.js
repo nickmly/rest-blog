@@ -2,7 +2,8 @@ var express = require('express'),
     app = express(),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
-    methodOverride = require('method-override');
+    methodOverride = require('method-override'),
+    expressSanitizer = require('express-sanitizer');
 
 // Connect to mongoDB database
 mongoose.connect("mongodb://localhost/rest_blog");
@@ -10,6 +11,7 @@ app.set("view engine", "ejs"); // Don't have to type .ejs when specifying routes
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method")); // For put and delete methods in our ejs files
+app.use(expressSanitizer()); // For preventing script tags inside blog posts
 
 // Set up mongo schema
 var blogSchema = new mongoose.Schema({
@@ -50,6 +52,9 @@ app.get("/blogs/new", function (req, res) {
 
 // CREATE
 app.post("/blogs", function (req, res) {
+    // Remove all script tags from the blog
+    req.body.blog.body = req.sanitize(req.body.blog.body);
+
     // Get blog object from post request and add to database
     Blog.create(req.body.blog, function (err, blog) {
         if (err) {
@@ -84,6 +89,9 @@ app.get("/blogs/:id/edit", function (req, res) {
 
 // UPDATE
 app.put("/blogs/:id", function (req, res) {
+    // Remove all script tags from the blog
+    req.body.blog.body = req.sanitize(req.body.blog.body);
+    
     Blog.findByIdAndUpdate(req.params.id, req.body.blog, function (err, updatedBlog) {
         if (err) {
             res.redirect("/blogs");

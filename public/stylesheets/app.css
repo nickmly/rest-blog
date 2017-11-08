@@ -9,3 +9,7 @@ form {
 i.icon {
     font-size: 2em;
 }
+
+a i.icon {
+    font-size: 1em;
+}
